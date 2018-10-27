@@ -1,25 +1,35 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
+import DirectoryPicker from "./DirectoryPicker";
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      targetDirectory: ""
+    };
+  }
+
+  componentDidMount() {
+    this.setState({
+      targetDirectory: localStorage.getItem("targetDirectory")
+    });
+  }
+  handleDirectorySelection = event => {
+    const path = event.target.files[0].path;
+    localStorage.setItem("targetDirectory", path);
+    this.setState({
+      targetDirectory: path
+    });
+  };
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <DirectoryPicker
+          targetDirectory={this.state.targetDirectory}
+          handleDirectorySelection={this.handleDirectorySelection}
+        />
       </div>
     );
   }
