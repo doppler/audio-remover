@@ -2,6 +2,8 @@
   "name": "audio-remover",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
+  "main": "src/electron-starter.js",
   "dependencies": {
     "electron": "^3.0.6",
     "react": "^16.6.0",
@@ -9,10 +11,22 @@
     "react-scripts": "2.0.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "nf start",
+    "start": "BROWSER=false react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "electron": "electron .",
+    "electron-dev": "ELECTRON_START_URL=http://localhost:3000 electron ."
+  },
+  "build": {
+    "appId": "com.electron.audio-remover",
+    "win": {
+      "iconUrl": "https://cdn2.iconfinder.com/data/icons/designer-skills/128/react-256.png"
+    },
+    "directories": {
+      "buildResources": "public"
+    }
   },
   "eslintConfig": {
     "extends": "react-app"
