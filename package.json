@@ -6,6 +6,8 @@
   "main": "src/electron-starter.js",
   "dependencies": {
     "electron": "^3.0.6",
+    "fluent-ffmpeg": "^2.1.2",
+    "rc-progress": "^2.2.6",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-dropzone": "^7.0.1",

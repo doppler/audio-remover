@@ -3,6 +3,7 @@ import "./App.css";
 import DirectoryPicker from "./DirectoryPicker";
 import Dropzone from "react-dropzone";
 import AcceptedFiles from "./AcceptedFiles";
+import StatusMonitor from "./StatusMonitor";
 
 class App extends Component {
   constructor() {
@@ -10,7 +11,8 @@ class App extends Component {
     this.state = {
       targetDirectory: "",
       acceptedFiles: [],
-      processedFiles: []
+      processedFiles: [],
+      status: {}
     };
   }
 
@@ -18,10 +20,23 @@ class App extends Component {
     this.setState({
       targetDirectory: localStorage.getItem("targetDirectory")
     });
-    window.ipcRenderer.on("main-received-files", (event, arg) => {
-      console.log("main-received-files", arg);
+    window.ipcRenderer.on("process-status", (event, status) => {
+      this.handleProcessingStatus(status);
+      // console.log("process-status", status);
     });
   }
+
+  handleProcessingStatus = status => {
+    if (status.saved) {
+      console.log("status saved", status.file);
+      this.setState(prevState => ({
+        acceptedFiles: prevState.acceptedFiles.filter(file => {
+          return file.name === status.file;
+        })
+      }));
+    }
+    this.setState({ status });
+  };
 
   handleDirectorySelection = event => {
     const path = event.target.files[0].path;
@@ -32,10 +47,19 @@ class App extends Component {
   };
 
   handleFileDrop = acceptedFiles => {
+    const files = acceptedFiles.map(file => {
+      return {
+        name: file.name,
+        path: file.path
+      };
+    });
     this.setState({
       acceptedFiles: acceptedFiles
     });
-    window.ipcRenderer.send("accepted-files", acceptedFiles);
+    window.ipcRenderer.send("process-request", {
+      targetDirectory: this.state.targetDirectory,
+      files
+    });
   };
 
   render() {
@@ -46,7 +70,10 @@ class App extends Component {
           handleDirectorySelection={this.handleDirectorySelection}
         />
         {this.state.acceptedFiles.length > 0 ? (
-          <AcceptedFiles acceptedFiles={this.state.acceptedFiles} />
+          <>
+            <StatusMonitor status={this.state.status} />
+            <AcceptedFiles acceptedFiles={this.state.acceptedFiles} />
+          </>
         ) : (
           <Dropzone onDrop={this.handleFileDrop} />
         )}

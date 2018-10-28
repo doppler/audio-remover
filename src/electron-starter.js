@@ -62,10 +62,12 @@ app.on("activate", function() {
 // code. You can also put them in separate files and require them here.
 
 const { ipcMain } = require("electron");
+const processWithFfmpeg = require("./process-with-ffmpeg");
 
-ipcMain.on("accepted-files", (event, files) => {
-  console.log("accepted-files received", files);
-  event.sender.send("main-received-files", files);
+ipcMain.on("process-request", (event, request) => {
+  processWithFfmpeg(request, status => {
+    event.sender.send("process-status", status);
+  });
 });
 //
 // ipcMain.on("asynchronous-message", (event, arg) => {
