@@ -22,13 +22,11 @@ class App extends Component {
     });
     window.ipcRenderer.on("process-status", (event, status) => {
       this.handleProcessingStatus(status);
-      // console.log("process-status", status);
     });
   }
 
   handleProcessingStatus = status => {
     if (status.saved) {
-      console.log("status saved", status.file);
       this.setState(prevState => ({
         acceptedFiles: prevState.acceptedFiles.filter(file => {
           return file.name === status.file;
