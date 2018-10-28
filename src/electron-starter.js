@@ -62,6 +62,11 @@ app.on("activate", function() {
 // code. You can also put them in separate files and require them here.
 
 const { ipcMain } = require("electron");
+
+ipcMain.on("accepted-files", (event, files) => {
+  console.log("accepted-files received", files);
+  event.sender.send("main-received-files", files);
+});
 //
 // ipcMain.on("asynchronous-message", (event, arg) => {
 //   console.log(arg);

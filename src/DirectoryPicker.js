@@ -24,7 +24,7 @@ const DirectoryInput = ({ handleDirectorySelection }) => (
       onChange={handleDirectorySelection}
       webkitdirectory=""
     />
-    <label className="DirectoryInput-label" for="directory-input">
+    <label className="DirectoryInput-label" htmlFor="directory-input">
       Choose a target directory
     </label>
   </>

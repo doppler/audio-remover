@@ -18,6 +18,9 @@ class App extends Component {
     this.setState({
       targetDirectory: localStorage.getItem("targetDirectory")
     });
+    window.ipcRenderer.on("main-received-files", (event, arg) => {
+      console.log("main-received-files", arg);
+    });
   }
 
   handleDirectorySelection = event => {
@@ -32,6 +35,7 @@ class App extends Component {
     this.setState({
       acceptedFiles: acceptedFiles
     });
+    window.ipcRenderer.send("accepted-files", acceptedFiles);
   };
 
   render() {
