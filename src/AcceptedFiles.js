@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProcessingReport = ({ acceptedFiles }) => {
+const AcceptedFiles = ({ acceptedFiles }) => {
   return (
     <ul>
       {acceptedFiles.map((file, i) => (
@@ -12,4 +12,4 @@ const ProcessingReport = ({ acceptedFiles }) => {
   );
 };
 
-export default ProcessingReport;
+export default AcceptedFiles;
