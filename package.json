@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "./",
-  "main": "src/electron-starter.js",
+  "main": "public/main.js",
   "dependencies": {
-    "electron": "^3.0.6",
+    "electron-is-dev": "^1.0.1",
+    "ffmpeg-static": "^2.3.0",
     "fluent-ffmpeg": "^2.1.2",
     "rc-progress": "^2.2.6",
     "react": "^16.6.0",
@@ -14,21 +15,36 @@
     "react-scripts": "2.0.5"
   },
   "scripts": {
-    "dev": "nf start",
     "start": "BROWSER=false react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron": "electron .",
-    "electron-dev": "ELECTRON_START_URL=http://localhost:3000 electron ."
+    "dev": "nf start",
+    "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "preelectron-pack": "yarn build",
+    "electron-pack": "build -w --ia32 --config.extraMetadata.main=build/main.js"
   },
   "build": {
     "appId": "com.electron.audio-remover",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "asarUnpack": [
+      "node_modules/ffmpeg-static/**"
+    ],
     "win": {
-      "iconUrl": "https://cdn2.iconfinder.com/data/icons/designer-skills/128/react-256.png"
+      "target": "portable",
+      "icon": "https://cdn2.iconfinder.com/data/icons/designer-skills/128/react-256.png",
+      "files": [
+        "!node_modules/ffmpeg-static/bin/linux/{/*}",
+        "!node_modules/ffmpeg-static/bin/darwin/{/*}",
+        "!node_modules/ffmpeg-static/bin/win32/x64/{/*}"
+      ]
     },
     "directories": {
-      "buildResources": "public"
+      "buildResources": "assets"
     }
   },
   "eslintConfig": {
@@ -41,6 +57,9 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "electron-builder": "^20.28.4"
+    "concurrently": "^4.0.1",
+    "electron": "^3.0.6",
+    "electron-builder": "^20.28.4",
+    "wait-on": "^3.1.0"
   }
 }
