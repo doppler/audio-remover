@@ -3481,6 +3481,10 @@ ffmpeg-static@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/ffmpeg-static/-/ffmpeg-static-2.3.0.tgz#36976dc432a8df269c62aea705256bbd9fb66a94"
 
+ffprobe-static@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/ffprobe-static/-/ffprobe-static-3.0.0.tgz#479689c8a237987beca5627968f3d87429bf569d"
+
 figgy-pudding@^3.1.0, figgy-pudding@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/figgy-pudding/-/figgy-pudding-3.5.1.tgz#862470112901c727a0e495a80744bd5baa1d6790"

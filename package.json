@@ -7,6 +7,7 @@
   "dependencies": {
     "electron-is-dev": "^1.0.1",
     "ffmpeg-static": "^2.3.0",
+    "ffprobe-static": "^3.0.0",
     "fluent-ffmpeg": "^2.1.2",
     "rc-progress": "^2.2.6",
     "react": "^16.6.0",
@@ -20,8 +21,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron": "electron .",
-    "dev": "nf start",
-    "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
     "preelectron-pack": "yarn build",
     "electron-pack": "build -w --ia32 --config.extraMetadata.main=build/main.js"
   },
@@ -32,7 +32,8 @@
       "node_modules/**/*"
     ],
     "asarUnpack": [
-      "node_modules/ffmpeg-static/**"
+      "node_modules/ffmpeg-static/**",
+      "node_modules/ffprobe-static/**"
     ],
     "win": {
       "target": "portable",
@@ -40,7 +41,10 @@
       "files": [
         "!node_modules/ffmpeg-static/bin/linux/{/*}",
         "!node_modules/ffmpeg-static/bin/darwin/{/*}",
-        "!node_modules/ffmpeg-static/bin/win32/x64/{/*}"
+        "!node_modules/ffmpeg-static/bin/win32/x64/{/*}",
+        "!node_modules/ffprobe-static/bin/linux/{/*}",
+        "!node_modules/ffprobe-static/bin/darwin/{/*}",
+        "!node_modules/ffprobe-static/bin/win32/x64/{/*}"
       ]
     },
     "directories": {

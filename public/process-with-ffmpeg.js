@@ -3,30 +3,44 @@ const ffmpegPath = require("ffmpeg-static").path.replace(
   "app.asar",
   "app.asar.unpacked"
 );
+const ffProbePath = require("ffprobe-static").path.replace(
+  "app.asar",
+  "app.asar.unpacked"
+);
 
-ffmpeg.setFfmpegPath(ffmpegPath);
+module.exports = (request, statusUpdate) => {
+  ffmpeg.setFfmpegPath(ffmpegPath);
+  ffmpeg.setFfprobePath(ffProbePath);
 
-module.exports = (request, status) => {
-  console.log(ffmpegPath);
   request.files.map((file, i) => {
     const outputPath = `${request.targetDirectory}/${file.name}`;
     ffmpeg(file.path)
       .noAudio()
-      .on("start", command => {
-        status({
+      .on("codecData", data => {
+        statusUpdate({
           file: file.name,
+          status: "codecData",
+          originalDuration: data.duration
+        });
+      })
+      .on("start", command => {
+        statusUpdate({
+          file: file.name,
+          status: "start",
           command
         });
       })
       .on("progress", progress => {
-        status({
+        statusUpdate({
           file: file.name,
-          progress: Math.round(progress.percent)
+          status: "progress",
+          progress
         });
       })
       .on("end", (stdout, stderr) => {
-        status({
+        statusUpdate({
           file: file.name,
+          status: "end",
           saved: outputPath
         });
       })
@@ -35,3 +49,9 @@ module.exports = (request, status) => {
     return null;
   });
 };
+
+ffmpeg("/path/to/file.avi").on("codecData", function(data) {
+  console.log(
+    "Input is " + data.audio + " audio " + "with " + data.video + " video"
+  );
+});

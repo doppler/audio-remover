@@ -20,20 +20,33 @@ class App extends Component {
     this.setState({
       targetDirectory: localStorage.getItem("targetDirectory")
     });
-    window.ipcRenderer.on("process-status", (event, status) => {
-      this.handleProcessingStatus(status);
+    window.ipcRenderer.on("process-status", (event, statusUpdate) => {
+      this.handleProcessingStatus(statusUpdate);
     });
   }
 
-  handleProcessingStatus = status => {
-    if (status.saved) {
-      this.setState(prevState => ({
-        acceptedFiles: prevState.acceptedFiles.filter(file => {
-          return file.name === status.file;
-        })
-      }));
+  handleProcessingStatus = statusUpdate => {
+    const { status } = this.state;
+    const { command, originalDuration, progress, saved } = statusUpdate;
+    switch (statusUpdate.status) {
+      case "start":
+        // Object.assign(status[statusUpdate.file], {}, command);
+        status[statusUpdate.file] = { command: command };
+      case "codecData":
+        status[statusUpdate.file].originalDuration = originalDuration;
+      case "progress":
+        status[statusUpdate.file].progress = progress;
+        this.setState({ status });
+        console.log(status);
+        break;
+      case "end":
+        delete status[statusUpdate.file];
+        const acceptedFiles = this.state.acceptedFiles.filter(
+          file => file.name !== statusUpdate.file
+        );
+        this.setState({ status, acceptedFiles });
+        break;
     }
-    this.setState({ status });
   };
 
   handleDirectorySelection = event => {
