@@ -49,9 +49,3 @@ module.exports = (request, statusUpdate) => {
     return null;
   });
 };
-
-ffmpeg("/path/to/file.avi").on("codecData", function(data) {
-  console.log(
-    "Input is " + data.audio + " audio " + "with " + data.video + " video"
-  );
-});

@@ -37,7 +37,6 @@ class App extends Component {
       case "progress":
         status[statusUpdate.file].progress = progress;
         this.setState({ status });
-        console.log(status);
         break;
       case "end":
         delete status[statusUpdate.file];
