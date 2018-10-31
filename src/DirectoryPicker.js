@@ -2,7 +2,7 @@ import React from "react";
 
 const DirectoryPicker = ({ targetDirectory, handleDirectorySelection }) => {
   return (
-    <div id="DirectoryPicker">
+    <div className="DirectoryPicker">
       {targetDirectory ? (
         <DirectoryDisplay
           targetDirectory={targetDirectory}
@@ -16,7 +16,7 @@ const DirectoryPicker = ({ targetDirectory, handleDirectorySelection }) => {
 };
 
 const DirectoryInput = ({ handleDirectorySelection }) => (
-  <>
+  <div className="DirectoryInput">
     <input
       className="DirectoryInput"
       id="directory-input"
@@ -27,12 +27,12 @@ const DirectoryInput = ({ handleDirectorySelection }) => (
     <label className="DirectoryInput-label" htmlFor="directory-input">
       Choose a target directory
     </label>
-  </>
+  </div>
 );
 
 const DirectoryDisplay = ({ targetDirectory, handleDirectorySelection }) => (
-  <>
-    <span>{targetDirectory}</span>
+  <div className="DirectoryDisplay">
+    <span>Target Directory: {targetDirectory}</span>
     <button
       onClick={() =>
         handleDirectorySelection({ target: { files: [{ path: "" }] } })
@@ -40,6 +40,6 @@ const DirectoryDisplay = ({ targetDirectory, handleDirectorySelection }) => (
     >
       Change
     </button>
-  </>
+  </div>
 );
 export default DirectoryPicker;

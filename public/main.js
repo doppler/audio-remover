@@ -7,7 +7,7 @@ const path = require("path");
 let mainWindow;
 
 function createWindow() {
-  mainWindow = new BrowserWindow({ width: 800, height: 600 });
+  mainWindow = new BrowserWindow({ width: 400, height: 300 });
 
   mainWindow.loadURL(
     isDev
@@ -15,8 +15,8 @@ function createWindow() {
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
 
-  mainWindow.webContents.openDevTools();
   if (isDev) {
+    mainWindow.webContents.openDevTools();
     BrowserWindow.addDevToolsExtension(
       "/Users/doppler/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/3.4.2_0"
     );

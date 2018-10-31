@@ -16,13 +16,6 @@ module.exports = (request, statusUpdate) => {
     const outputPath = `${request.targetDirectory}/${file.name}`;
     ffmpeg(file.path)
       .noAudio()
-      .on("codecData", data => {
-        statusUpdate({
-          file: file.name,
-          status: "codecData",
-          originalDuration: data.duration
-        });
-      })
       .on("start", command => {
         statusUpdate({
           file: file.name,
@@ -40,8 +33,7 @@ module.exports = (request, statusUpdate) => {
       .on("end", (stdout, stderr) => {
         statusUpdate({
           file: file.name,
-          status: "end",
-          saved: outputPath
+          status: "end"
         });
       })
       .output(outputPath)

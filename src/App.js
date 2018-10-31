@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "./App.css";
 import DirectoryPicker from "./DirectoryPicker";
 import Dropzone from "react-dropzone";
-import AcceptedFiles from "./AcceptedFiles";
 import StatusMonitor from "./StatusMonitor";
 
 class App extends Component {
@@ -27,13 +26,11 @@ class App extends Component {
 
   handleProcessingStatus = statusUpdate => {
     const { status } = this.state;
-    const { command, originalDuration, progress, saved } = statusUpdate;
+    const { command, progress } = statusUpdate;
     switch (statusUpdate.status) {
       case "start":
-        // Object.assign(status[statusUpdate.file], {}, command);
         status[statusUpdate.file] = { command: command };
-      case "codecData":
-        status[statusUpdate.file].originalDuration = originalDuration;
+        break;
       case "progress":
         status[statusUpdate.file].progress = progress;
         this.setState({ status });
@@ -44,6 +41,8 @@ class App extends Component {
           file => file.name !== statusUpdate.file
         );
         this.setState({ status, acceptedFiles });
+        break;
+      default:
         break;
     }
   };
@@ -80,13 +79,17 @@ class App extends Component {
           handleDirectorySelection={this.handleDirectorySelection}
         />
         {this.state.acceptedFiles.length > 0 ? (
-          <>
+          <div>
             <StatusMonitor status={this.state.status} />
-            <AcceptedFiles acceptedFiles={this.state.acceptedFiles} />
-          </>
-        ) : (
-          <Dropzone onDrop={this.handleFileDrop} />
-        )}
+          </div>
+        ) : this.state.targetDirectory !== "" ? (
+          <Dropzone className="Dropzone" onDrop={this.handleFileDrop}>
+            <p>
+              Drag mpeg files here to strip audio and copy to destination
+              folder.
+            </p>
+          </Dropzone>
+        ) : null}
       </div>
     );
   }
